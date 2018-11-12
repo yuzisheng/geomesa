@@ -11,11 +11,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.locationtech.geomesa</groupId>
-        <artifactId>geomesa-hbase_2.11</artifactId>
+        <artifactId>geomesa-hbase_2.12</artifactId>
         <version>2.1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>geomesa-hbase-distributed-runtime_2.11</artifactId>
+    <artifactId>geomesa-hbase-distributed-runtime_2.12</artifactId>
     <name>GeoMesa HBase Distributed Runtime</name>
 
     <properties>
