@@ -11,6 +11,7 @@ package org.locationtech.geomesa.utils.cache
 import org.locationtech.geomesa.utils.geotools.SimpleFeatureTypes
 import org.opengis.feature.simple.SimpleFeatureType
 
+// @七 通过sft生成缓存key 并通过key恢复sft
 object CacheKeyGenerator {
 
   /**

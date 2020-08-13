@@ -36,8 +36,8 @@ class SimpleFeatureTypesTest extends Specification {
   "SimpleFeatureTypes" should {
     "create an sft that" >> {
       val sft = SimpleFeatureTypes.createType("testing", "id:Integer,dtg:Date,*geom:Point:srid=4326:index=true")
-      "has name \'test\'"  >> { sft.getTypeName mustEqual "testing" }
-      "has three attributes" >> { sft.getAttributeCount must be_==(3) }
+      "has name \'test\'"  >> { sft.getTypeName mustEqual "testing" }  // @七 返回sft名称
+      "has three attributes" >> { sft.getAttributeCount must be_==(3) }  // @七 返回sft属性个数
       "has an id attribute which is " >> {
         val idDescriptor = sft.getDescriptor("id")
         "not null"    >> { (idDescriptor must not).beNull }
@@ -52,7 +52,7 @@ class SimpleFeatureTypesTest extends Specification {
         geomDescriptor.getUserData.get("index") must beNull
       }
       "encode an sft properly" >> {
-        SimpleFeatureTypes.encodeType(sft) must be equalTo s"id:Integer,dtg:Date,*geom:Point:srid=4326"
+        SimpleFeatureTypes.encodeType(sft) must be equalTo s"id:Integer,dtg:Date,*geom:Point:srid=4326"  // @七 sft编码
       }
       "encode an sft properly without user data" >> {
         sft.getUserData.put("geomesa.table.sharing", "true")
@@ -60,14 +60,14 @@ class SimpleFeatureTypesTest extends Specification {
         SimpleFeatureTypes.encodeType(sft) must be equalTo s"id:Integer,dtg:Date,*geom:Point:srid=4326"
       }
       "encode an sft properly with geomesa user data" >> {
-        val encoded = SimpleFeatureTypes.encodeType(sft, includeUserData = true)
+        val encoded = SimpleFeatureTypes.encodeType(sft, includeUserData = true)  // @七 sft编码带有geomesa user data
         encoded must startWith("id:Integer,dtg:Date,*geom:Point:srid=4326;")
         encoded must contain("geomesa.index.dtg='dtg'")
         encoded must contain("geomesa.table.sharing='true'")
         encoded must not(contain("hello="))
       }
       "encode an sft properly with specified user data" >> {
-        import org.locationtech.geomesa.utils.geotools.RichSimpleFeatureType.RichSimpleFeatureType
+        import org.locationtech.geomesa.utils.geotools.RichSimpleFeatureType.RichSimpleFeatureType  // @七 sft编码带有用户自定义user data需引入此类
         sft.setUserDataPrefixes(Seq("hello"))
         val encoded = SimpleFeatureTypes.encodeType(sft, includeUserData = true)
         encoded must startWith("id:Integer,dtg:Date,*geom:Point:srid=4326;")
@@ -99,6 +99,7 @@ class SimpleFeatureTypesTest extends Specification {
         sft.getTypeName mustEqual("testing")
       }
       "complex ones" >> {
+        // @七 namespace的划分是以最后一个冒号为分割
         val sft = SimpleFeatureTypes.createType("http://geomesa/ns:testing", "dtg:Date,*geom:Point:srid=4326")
         sft.getName.getLocalPart mustEqual "testing"
         sft.getName.getNamespaceURI mustEqual "http://geomesa/ns"

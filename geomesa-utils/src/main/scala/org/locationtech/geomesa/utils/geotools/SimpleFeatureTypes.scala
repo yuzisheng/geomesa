@@ -33,6 +33,7 @@ object SimpleFeatureTypes {
   object Configs {
 
     // note: configs that don't start with 'geomesa' won't be persisted
+    // @七 名称未以 'geomesa' 开头的配置不会被持久化
 
     val DefaultDtgField       = "geomesa.index.dtg"
     val EnabledIndices        = "geomesa.indices.enabled"
@@ -133,6 +134,7 @@ object SimpleFeatureTypes {
     * Create a simple feature type from a specification. Extends DataUtilities.createType with
     * GeoMesa-specific functionality like list/map attributes, indexing options, etc.
     *
+    * @七 该方法比 `createType` 更有效因为其会返回一个不可变的缓存实例
     * This method can be more efficient that `createType`, as it will return a cached, immutable instance
     *
     * Note that immutable types will never be `equals` to a mutable type, due to specific class checking
@@ -146,6 +148,7 @@ object SimpleFeatureTypes {
     var sft = cache.get((typeName, spec))
     if (sft == null) {
       sft = immutable(createType(typeName, spec)).asInstanceOf[ImmutableSimpleFeatureType]
+      // @七 以 `(名称, 详述)` 为键, sft为值放入缓存
       cache.put((typeName, spec), sft)
     }
     sft
