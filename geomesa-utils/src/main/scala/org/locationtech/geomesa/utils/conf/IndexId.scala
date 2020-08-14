@@ -15,8 +15,10 @@ import scala.util.control.NonFatal
 
 case class IndexId(name: String, version: Int, attributes: Seq[String], mode: IndexMode = IndexMode.ReadWrite) {
 
+  // @七 索引编码方式
   lazy val encoded: String = s"$name:$version:${mode.flag}:${attributes.mkString(":")}"
 
+  // @七 学习这种`equals`的写法
   override def equals(other: Any): Boolean = other match {
     case that: IndexId => encoded == that.encoded
     case _ => false
@@ -38,6 +40,7 @@ object IndexId {
     */
   def apply(s: String): IndexId = {
     try {
+      // @七 字符串解析为`IndexId`: 包含flag
       val Array(name, version, flag, attrs @ _*) = s.split(":")
       IndexId(name, version.toInt, attrs, IndexMode(flag.toInt))
     } catch {
@@ -53,6 +56,7 @@ object IndexId {
     * @return
     */
   def id(identifier: String): IndexId = {
+    // @七 字符串解析为`IndexId`: 不包含flag
     val Array(name, version, attrs @ _*) = identifier.split(":")
     IndexId(name, version.toInt, attrs)
   }

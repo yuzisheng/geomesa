@@ -50,6 +50,7 @@ object DefaultFeatureIndexFactory extends GeoMesaFeatureIndexFactory {
 
     lazy val Seq(geom3, dtg) = index.attributes
     lazy val Seq(geom2) = index.attributes
+    // @七 `@`是给模式匹配起个变量名 一般格式为 `variableName@pattern`
     lazy val Seq(attribute, secondary @ _*) = index.attributes
 
     val idx = (index.name, index.version) match {

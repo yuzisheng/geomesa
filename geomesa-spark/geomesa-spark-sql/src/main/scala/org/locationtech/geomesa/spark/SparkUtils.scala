@@ -82,6 +82,7 @@ object SparkUtils extends LazyLogging {
     case IsNotNull(attr)                  => None
   }
 
+  // @七 根据name和df的schema创建一个sft
   def createFeatureType(name: String, struct: StructType): SimpleFeatureType = {
     val builder = new SimpleFeatureTypeBuilder
     builder.setName(name)
@@ -157,6 +158,7 @@ object SparkUtils extends LazyLogging {
     */
   def rowsToFeatures(sft: SimpleFeatureType, schema: StructType): SimpleFeatureRowMapping = {
     val mappings = Seq.tabulate(sft.getAttributeCount)(i => i -> schema.fieldIndex(sft.getDescriptor(i).getLocalName))
+    // @七 若 `__fid__` 字段不存在则使用随机数加时间戳
     val fid: Row => String = schema.fields.indexWhere(_.name == "__fid__") match {
       case -1 => _ => TimeSortedUuidGenerator.createUuid().toString
       case i  => r => r.getString(i)

@@ -187,6 +187,7 @@ abstract class MetadataBackedDataStore(config: NamespaceConfig) extends DataStor
    * @return feature type, or null if it does not exist
    */
   override def getSchema(typeName: String): SimpleFeatureType = {
+    // @七 从rowKey为 `tableName~attributes` 中获取spec信息构建sft (默认走缓存)
     metadata.read(typeName, AttributesKey) match {
       case None => null
       case Some(spec) => SimpleFeatureTypes.createImmutableType(config.namespace.orNull, typeName, spec)
