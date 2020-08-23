@@ -199,6 +199,7 @@ abstract class GeoMesaDataStore[DS <: GeoMesaDataStore[DS]](val config: GeoMesaD
       logger.debug(s"Delaying creation of partitioned indices ${indices.map(_.identifier).mkString(", ")}")
     } else {
       logger.debug(s"Creating indices ${indices.map(_.identifier).mkString(", ")}")
+      // @七 这里可以看出Geomesa的建表本质上就是建索引表
       indices.foreach(index => adapter.createTable(index, None, index.getSplits(None)))
     }
   }

@@ -129,6 +129,7 @@ class HBaseIndexAdapter(ds: HBaseDataStore) extends IndexAdapter[HBaseDataStore]
     }
   }
 
+  // @七 HBase表重命名
   override def renameTable(from: String, to: String): Unit = {
     WithClose(ds.connection.getAdmin) { admin =>
       val existing = TableName.valueOf(from)
@@ -146,6 +147,7 @@ class HBaseIndexAdapter(ds: HBaseDataStore) extends IndexAdapter[HBaseDataStore]
     }
   }
 
+  // @七 HBase删除表
   override def deleteTables(tables: Seq[String]): Unit = {
     WithClose(ds.connection.getAdmin) { admin =>
       tables.par.foreach { name =>

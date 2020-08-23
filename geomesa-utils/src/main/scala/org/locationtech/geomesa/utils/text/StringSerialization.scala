@@ -142,6 +142,7 @@ object StringSerialization extends LazyLogging {
     * underscores and bytes...e.g. _8a_2f_3b
     */
   def alphaNumericSafeString(input: String): String = {
+    // @七 对于非字母非数字的字符进行编码 `_`恰好为`5f`
     if (AlphaNumericPattern.matcher(input).matches()) { input } else {
       val sb = new StringBuilder
       input.foreach { c =>

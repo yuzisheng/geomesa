@@ -351,6 +351,7 @@ abstract class GeoMesaFeatureIndex[T, U](val ds: GeoMesaDataStore[_],
     val prefix = (ds.config.catalog +: Seq(sft.getTypeName, name).map(alphaNumericSafeString)).mkString("_")
     val suffix = s"v$version${partition.map(p => s"_$p").getOrElse("")}"
 
+    // @七 构建索引表名 前缀:catalog 中间:属性 后缀:版本
     def build(attrs: Seq[String]): String = (prefix +: attrs :+ suffix).mkString("_")
 
     val full = build(attributes.map(alphaNumericSafeString))
@@ -432,6 +433,7 @@ object GeoMesaFeatureIndex {
     val attrs = if (attributes.isEmpty) { "" } else {
       attributes.map(StringSerialization.alphaNumericSafeString).mkString(".", ".", "")
     }
+    // @七 RowKey波浪线后生成规则 table.indexName.indexAttr.version 例如 ~table.attr.name.loc.v8
     s"table.$name$attrs.v$version"
   }
 
